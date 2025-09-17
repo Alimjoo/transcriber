@@ -19,7 +19,7 @@ document.getElementById('transcribeForm').addEventListener('submit', async (even
         formData.append('audio', audioInput);
         formData.append('model_id', modelId);
 
-        const response = await fetch('http://localhost:3000/transcribe', {
+        const response = await fetch('/transcribe', {
             method: 'POST',
             body: formData,
         });
