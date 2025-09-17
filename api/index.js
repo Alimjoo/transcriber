@@ -1,11 +1,9 @@
-// new version with google
 import express from 'express';
 import multer from 'multer';
 import axios from 'axios';
-import { promises as fs } from 'fs';
-import path from 'path';
 import FormData from 'form-data';
 import { fileURLToPath } from 'url';
+import path from 'path';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -13,22 +11,53 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const port = 3000;
 
+// Supported audio MIME types
+const ALLOWED_MIME_TYPES = ['audio/wav', 'audio/mpeg', 'audio/webm'];
 
+// Configure multer to store files in memory
+const upload = multer({
+    storage: multer.memoryStorage(),
+    limits: { fileSize: 10 * 1024 * 1024 }, // 10MB limit
+    fileFilter: (req, file, cb) => {
+        if (ALLOWED_MIME_TYPES.includes(file.mimetype)) {
+            cb(null, true);
+        } else {
+            cb(new Error(`Invalid file type. Only ${ALLOWED_MIME_TYPES.join(', ')} are allowed.`));
+        }
+    },
+});
+
+// Middleware
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
-
-// Serve static files from the root directory
 app.use(express.static(__dirname));
-
-// Serve static files from the public directory
 app.use(express.static(path.join(__dirname, '../public')));
 
+// Function to send request to Hugging Face API with retry
+async function sendToHuggingFace(form, retries = 1) {
+    try {
+        const response = await axios.post(
+            'https://piyazon-ug-asr-api.hf.space/transcribe',
+            form,
+            {
+                headers: {
+                    ...form.getHeaders(),
+                    'Accept': 'application/json',
+                },
+                timeout: 60000, // 60-second timeout
+            }
+        );
+        return response;
+    } catch (error) {
+        if (retries > 0 && (error.code === 'ECONNABORTED' || error.response?.status >= 500)) {
+            console.log(`Retrying Hugging Face API request (${retries} retries left)...`);
+            return sendToHuggingFace(form, retries - 1);
+        }
+        throw error;
+    }
+}
 
-
-// In server.js, change multer config
-const upload = multer({ storage: multer.memoryStorage() });
-
-// Endpoint to handle POST request for audio transcription
+// Endpoint to handle audio transcription
 app.post('/transcribe', upload.single('audio'), async (req, res) => {
     try {
         // Check if audio file is provided
@@ -38,71 +67,66 @@ app.post('/transcribe', upload.single('audio'), async (req, res) => {
 
         // Validate model_id
         const modelId = req.body.model_id || 'piyazon/ASR-cv-corpus-ug-11';
-        // const validModels = [
-        //     'piyazon/ASR-cv-corpus-ug-11',
-        //     'piyazon/ASR-cv-corpus-ug-10',
-        //     'piyazon/ASR-cv-corpus-ug-9',
-        //     'piyazon/ASR-cv-corpus-ug-8',
-        //     'piyazon/ASR-cv-corpus-ug-7',
-        // ];
-        // if (!validModels.includes(modelId)) {
-        //     return res.status(400).json({ error: `Invalid model_id. Choose from: ${validModels.join(', ')}` });
-        // }
 
-        // // Read the uploaded audio file
-        // const audioPath = req.file.path;
-        // const audioBuffer = await fs.readFile(audioPath);
-        const audioBuffer = req.file.buffer;
+        // Log file details for debugging
+        console.log('Received audio file:', {
+            originalName: req.file.originalname,
+            mimeType: req.file.mimetype,
+            size: req.file.size,
+            modelId: modelId,
+        });
 
-        // Create FormData for the request to Hugging Face API
+        // Validate buffer
+        if (!req.file.buffer || req.file.buffer.length === 0) {
+            return res.status(400).json({ error: 'Audio file is empty or corrupted' });
+        }
+
+        // Create FormData for Hugging Face API
         const form = new FormData();
-        form.append('audio', audioBuffer, {
-            filename: req.file.originalname,
+        const filename = req.file.originalname || (req.file.mimetype === 'audio/mpeg' ? 'audio.mp3' : 'audio.webm');
+        form.append('audio', req.file.buffer, {
+            filename: filename,
             contentType: req.file.mimetype,
         });
         form.append('model_id', modelId);
 
         // Send request to Hugging Face API
-        const response = await axios.post(
-            'https://piyazon-ug-asr-api.hf.space/transcribe',
-            form,
-            {
-                headers: {
-                    ...form.getHeaders(),
-                },
-            }
-        );
+        const response = await sendToHuggingFace(form);
 
-        // Clean up the uploaded file
-        // await fs.unlink(audioPath);
+        // Log successful response
+        console.log('Hugging Face API response:', {
+            status: response.status,
+            transcription: response.data.transcription,
+        });
 
         // Return the transcription
         res.json({ transcription: response.data.transcription });
     } catch (error) {
-        console.error('Error:', error.message);
-        // Clean up file in case of error
-        if (req.file && req.file.path) {
-            try {
-                await fs.unlink(req.file.path);
-            } catch (unlinkError) {
-                console.error('Error cleaning up file:', unlinkError.message);
-            }
-        }
+        console.error('Transcription error:', {
+            message: error.message,
+            stack: error.stack,
+            response: error.response ? {
+                status: error.response.status,
+                data: error.response.data,
+            } : null,
+        });
+
         // Handle different error types
         if (error.response) {
-            res.status(error.response.status).json({ error: error.response.data.detail || 'Hugging Face API error' });
+            const errorMessage = error.response.data.detail || error.response.data.error || 'Hugging Face API error';
+            res.status(error.response.status).json({ error: errorMessage });
+        } else if (error.code === 'ECONNABORTED') {
+            res.status(504).json({ error: 'Request to Hugging Face API timed out' });
+        } else if (error.message.includes('Invalid file type')) {
+            res.status(400).json({ error: error.message });
         } else {
-            res.status(500).json({ error: 'Internal server error' });
+            res.status(500).json({ error: `Internal server error: ${error.message}` });
         }
     }
 });
-
-
-
 
 // Start the server
 app.listen(port, () => {
     console.log(`Server is running at http://localhost:${port}`);
 });
-
 
