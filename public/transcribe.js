@@ -12,7 +12,14 @@ const resultDiv = document.getElementById('result');
 startRecordingButton.addEventListener('click', async () => {
     try {
         const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-        mediaRecorder = new MediaRecorder(stream);
+        const audioContext = new AudioContext();
+        const source = audioContext.createMediaStreamSource(stream);
+        const dest = audioContext.createMediaStreamDestination();
+
+        // Connect to ensure audio is processed
+        source.connect(dest);
+        const mimeType = MediaRecorder.isTypeSupported('audio/mp3') ? 'audio/mp3' : 'audio/wav';
+        mediaRecorder = new MediaRecorder(dest.stream, { mimeType });
         audioChunks = [];
 
         mediaRecorder.ondataavailable = (event) => {
@@ -20,8 +27,20 @@ startRecordingButton.addEventListener('click', async () => {
         };
 
         mediaRecorder.onstop = () => {
-            const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
-            audioInput = new File([audioBlob], 'recorded_audio.wav', { type: 'audio/wav' });
+            const audioBlob = new Blob(audioChunks, { type: mimeType });
+            console.log('Recorded mimeType:', mimeType, 'Blob size:', audioBlob.size, 'bytes');
+
+            // Debug: Download to verify
+            const url = URL.createObjectURL(audioBlob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `recorded_audio.${mimeType === 'audio/mp3' ? 'mp3' : 'wav'}`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+
+            audioInput = new File([audioBlob], `recorded_audio.${mimeType === 'audio/mp3' ? 'mp3' : 'wav'}`, { type: mimeType });
             const dataTransfer = new DataTransfer();
             dataTransfer.items.add(audioInput);
             audioInputElement.files = dataTransfer.files;
