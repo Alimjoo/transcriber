@@ -12,9 +12,10 @@ startRecordingButton.addEventListener('click', async () => {
     try {
         // Request microphone access
         const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        console.log('Microphone access granted:', stream);
         
         // Initialize AudioContext and Recorder
-        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        audioContext = new (window.AudioContext || window.webkitAudioContext)({ sampleRate: 16000 });
         recorder = new Recorder(audioContext.createMediaStreamSource(stream));
         
         // Start recording
@@ -23,8 +24,16 @@ startRecordingButton.addEventListener('click', async () => {
         startRecordingButton.disabled = true;
         stopRecordingButton.disabled = false;
     } catch (error) {
-        console.error('مىكروفونغا ئېرىشىشتە خاتالىق كۆرۈلدى:', error);
-        recordingStatus.textContent = 'مىكروفونغا ئېرىشىش مەغلۇپ بولدى.';
+        console.error('Microphone access error:', error.name, error.message);
+        let errorMessage = 'مىكروفونغا ئېرىشىش مەغلۇپ بولدى: ';
+        if (error.name === 'NotAllowedError') {
+            errorMessage += 'مىكروفون رۇخسىتى رەت قىلىندى.';
+        } else if (error.name === 'NotFoundError') {
+            errorMessage += 'مىكروفون تېپىلمىدى.';
+        } else {
+            errorMessage += error.message;
+        }
+        recordingStatus.textContent = errorMessage;
     }
 });
 
@@ -38,7 +47,14 @@ stopRecordingButton.addEventListener('click', () => {
             dataTransfer.items.add(audioFile);
             audioInput.files = dataTransfer.files;
 
-            // Update UI
+            // Create a download link for debugging
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'recording.wav';
+            a.textContent = 'Download Recorded Audio';
+            document.body.appendChild(a);
+
             recordingStatus.textContent = 'خاتىرە توختىدى.';
             startRecordingButton.disabled = false;
             stopRecordingButton.disabled = true;
