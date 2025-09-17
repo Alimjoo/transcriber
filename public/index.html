@@ -16,12 +16,6 @@
             <input type="file" id="audio" name="audio" accept="audio/*" required>
         </div>
         <div class="form-group">
-            <label>مىكروفوندىن خاتىرە قىلىش:</label>
-            <button type="button" id="startRecording">خاتىرە باشلاش</button>
-            <button type="button" id="stopRecording" disabled>خاتىرە توختات</button>
-            <p id="recordingStatus">تىزىملەش تۆۋەن دەپ قالدى.</p>
-        </div>
-        <div class="form-group">
             <label for="model_id">Wav2Vec2 مودېلىنى تاللاڭ:</label>
             <select id="model_id" name="model_id">
                 <option value="piyazon/ASR-cv-corpus-ug-11">piyazon/ASR-cv-corpus-ug-11</option>
@@ -42,7 +36,6 @@
         https://huggingface.co/spaces/piyazon/Uyghur-ASR-Speech-to-Text
     </a>
 
-    <script src="https://cdn.jsdelivr.net/npm/recorder-js@1.0.7/dist/recorder.min.js"></script>
     <script src="./transcribe.js"></script>
 </body>
 </html>
