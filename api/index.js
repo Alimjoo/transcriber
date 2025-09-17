@@ -38,16 +38,16 @@ app.post('/transcribe', upload.single('audio'), async (req, res) => {
 
         // Validate model_id
         const modelId = req.body.model_id || 'piyazon/ASR-cv-corpus-ug-11';
-        const validModels = [
-            'piyazon/ASR-cv-corpus-ug-11',
-            'piyazon/ASR-cv-corpus-ug-10',
-            'piyazon/ASR-cv-corpus-ug-9',
-            'piyazon/ASR-cv-corpus-ug-8',
-            'piyazon/ASR-cv-corpus-ug-7',
-        ];
-        if (!validModels.includes(modelId)) {
-            return res.status(400).json({ error: `Invalid model_id. Choose from: ${validModels.join(', ')}` });
-        }
+        // const validModels = [
+        //     'piyazon/ASR-cv-corpus-ug-11',
+        //     'piyazon/ASR-cv-corpus-ug-10',
+        //     'piyazon/ASR-cv-corpus-ug-9',
+        //     'piyazon/ASR-cv-corpus-ug-8',
+        //     'piyazon/ASR-cv-corpus-ug-7',
+        // ];
+        // if (!validModels.includes(modelId)) {
+        //     return res.status(400).json({ error: `Invalid model_id. Choose from: ${validModels.join(', ')}` });
+        // }
 
         // // Read the uploaded audio file
         // const audioPath = req.file.path;
