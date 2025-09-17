@@ -1,4 +1,3 @@
-// Select DOM elements
 const startRecordingButton = document.getElementById('startRecording');
 const stopRecordingButton = document.getElementById('stopRecording');
 const recordingStatus = document.getElementById('recordingStatus');
@@ -6,41 +5,35 @@ const transcribeForm = document.getElementById('transcribeForm');
 const audioInput = document.getElementById('audio');
 const resultDiv = document.getElementById('result');
 
-let mediaRecorder = null;
-let audioChunks = [];
+let recorder = null;
+let audioContext = null;
 
-// Function to handle microphone access and recording
 startRecordingButton.addEventListener('click', async () => {
     try {
         // Request microphone access
         const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
         
-        // Initialize MediaRecorder
-        mediaRecorder = new MediaRecorder(stream);
-        audioChunks = [];
-
+        // Initialize AudioContext and Recorder
+        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        recorder = new Recorder(audioContext.createMediaStreamSource(stream));
+        
         // Start recording
-        mediaRecorder.start();
+        recorder.record();
         recordingStatus.textContent = 'خاتىرە قىلىنىۋاتىدۇ...';
-
-        // Enable/disable buttons
         startRecordingButton.disabled = true;
         stopRecordingButton.disabled = false;
+    } catch (error) {
+        console.error('مىكروفونغا ئېرىشىشتە خاتالىق كۆرۈلدى:', error);
+        recordingStatus.textContent = 'مىكروفونغا ئېرىشىش مەغلۇپ بولدى.';
+    }
+});
 
-        // Collect audio data
-        mediaRecorder.ondataavailable = (event) => {
-            audioChunks.push(event.data);
-        };
-
-        // When recording stops
-        mediaRecorder.onstop = () => {
-            // Create a Blob from the audio chunks
-            const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
-            
+stopRecordingButton.addEventListener('click', () => {
+    if (recorder) {
+        recorder.stop();
+        recorder.exportWAV((blob) => {
             // Create a file for the form input
-            const audioFile = new File([audioBlob], 'recording.wav', { type: 'audio/wav' });
-            
-            // Update the file input with the recorded audio
+            const audioFile = new File([blob], 'recording.wav', { type: 'audio/wav' });
             const dataTransfer = new DataTransfer();
             dataTransfer.items.add(audioFile);
             audioInput.files = dataTransfer.files;
@@ -49,19 +42,13 @@ startRecordingButton.addEventListener('click', async () => {
             recordingStatus.textContent = 'خاتىرە توختىدى.';
             startRecordingButton.disabled = false;
             stopRecordingButton.disabled = true;
-        };
-    } catch (error) {
-        console.error('مىكروفونغا ئېرىشىشتە خاتالىق كۆرۈلدى:', error);
-        recordingStatus.textContent = 'مىكروفونغا ئېرىشىش مەغلۇپ بولدى.';
+
+            // Clean up
+            audioContext.close();
+        });
     }
 });
 
-// Stop recording
-stopRecordingButton.addEventListener('click', () => {
-    if (mediaRecorder && mediaRecorder.state === 'recording') {
-        mediaRecorder.stop();
-    }
-});
 
 document.getElementById('transcribeForm').addEventListener('submit', async (event) => {
     event.preventDefault();
