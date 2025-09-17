@@ -45,6 +45,7 @@ button {
   border-radius: 5px;
   cursor: pointer;
   font-size: 16px;
+  font-family: 'sf-arabic', sans-serif;
 }
 button:hover {
   background-color: #45a049;
@@ -53,7 +54,7 @@ button:hover {
   margin-top: 20px;
   padding: 10px;
   border: 1px solid #ccc;
-  min-height: 100px;
+  min-height: 200px;
   direction: rtl;
   font-size: 18px;
 }
