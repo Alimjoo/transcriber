@@ -13,7 +13,13 @@
     <form id="transcribeForm" enctype="multipart/form-data">
         <div class="form-group">
             <label for="audio">ئاۋاز ھۆججىتى (WAV, MP3 قاتارلىقلار):</label>
-            <input type="file" id="audio" name="audio" accept="audio/*" capture="microphone" required>
+            <input type="file" id="audio" name="audio" accept="audio/*" required>
+        </div>
+        <div class="form-group">
+            <label>مايكىرودىن خاتىرە قىلىش:</label>
+            <button type="button" id="startRecording">خاتىرە باشلاش</button>
+            <button type="button" id="stopRecording" disabled>خاتىرە توختات</button>
+            <p id="recordingStatus">تىزىملەش تۆۋەن دەپ قالدى.</p>
         </div>
         <div class="form-group">
             <label for="model_id">Wav2Vec2 مودېلىنى تاللاڭ:</label>
