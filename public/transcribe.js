@@ -1,68 +1,65 @@
-let mediaRecorder;
-let audioChunks = [];
-let audioInput = null;
-
+// Select DOM elements
 const startRecordingButton = document.getElementById('startRecording');
 const stopRecordingButton = document.getElementById('stopRecording');
 const recordingStatus = document.getElementById('recordingStatus');
-const audioInputElement = document.getElementById('audio');
 const transcribeForm = document.getElementById('transcribeForm');
+const audioInput = document.getElementById('audio');
 const resultDiv = document.getElementById('result');
 
+let mediaRecorder = null;
+let audioChunks = [];
+
+// Function to handle microphone access and recording
 startRecordingButton.addEventListener('click', async () => {
     try {
+        // Request microphone access
         const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-        const audioContext = new AudioContext();
-        const source = audioContext.createMediaStreamSource(stream);
-        const dest = audioContext.createMediaStreamDestination();
-
-        // Connect to ensure audio is processed
-        source.connect(dest);
-        const mimeType = MediaRecorder.isTypeSupported('audio/mp3') ? 'audio/mp3' : 'audio/wav';
-        mediaRecorder = new MediaRecorder(dest.stream, { mimeType });
+        
+        // Initialize MediaRecorder
+        mediaRecorder = new MediaRecorder(stream);
         audioChunks = [];
 
+        // Start recording
+        mediaRecorder.start();
+        recordingStatus.textContent = 'خاتىرە قىلىنىۋاتىدۇ...';
+
+        // Enable/disable buttons
+        startRecordingButton.disabled = true;
+        stopRecordingButton.disabled = false;
+
+        // Collect audio data
         mediaRecorder.ondataavailable = (event) => {
             audioChunks.push(event.data);
         };
 
+        // When recording stops
         mediaRecorder.onstop = () => {
-            const audioBlob = new Blob(audioChunks, { type: mimeType });
-            console.log('Recorded mimeType:', mimeType, 'Blob size:', audioBlob.size, 'bytes');
-
-            // Debug: Download to verify
-            const url = URL.createObjectURL(audioBlob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `recorded_audio.${mimeType === 'audio/mp3' ? 'mp3' : 'wav'}`;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
-
-            audioInput = new File([audioBlob], `recorded_audio.${mimeType === 'audio/mp3' ? 'mp3' : 'wav'}`, { type: mimeType });
+            // Create a Blob from the audio chunks
+            const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+            
+            // Create a file for the form input
+            const audioFile = new File([audioBlob], 'recording.wav', { type: 'audio/wav' });
+            
+            // Update the file input with the recorded audio
             const dataTransfer = new DataTransfer();
-            dataTransfer.items.add(audioInput);
-            audioInputElement.files = dataTransfer.files;
-            recordingStatus.textContent = 'خاتىرە تاماملاندى، يېزىشقا تەييار.';
-        };
+            dataTransfer.items.add(audioFile);
+            audioInput.files = dataTransfer.files;
 
-        mediaRecorder.start();
-        startRecordingButton.disabled = true;
-        stopRecordingButton.disabled = false;
-        recordingStatus.textContent = 'خاتىرە قىلىۋاتىدۇ...';
+            // Update UI
+            recordingStatus.textContent = 'خاتىرە توختىدى.';
+            startRecordingButton.disabled = false;
+            stopRecordingButton.disabled = true;
+        };
     } catch (error) {
-        recordingStatus.textContent = `مايكىرودىغا زىيارەت خاتالىقى: ${error.message}`;
-        resultDiv.textContent = `خاتالىق: ${error.message}`;
-        resultDiv.classList.add('error');
+        console.error('مىكروفونغا ئېرىشىشتە خاتالىق كۆرۈلدى:', error);
+        recordingStatus.textContent = 'مىكروفونغا ئېرىشىش مەغلۇپ بولدى.';
     }
 });
 
+// Stop recording
 stopRecordingButton.addEventListener('click', () => {
-    if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+    if (mediaRecorder && mediaRecorder.state === 'recording') {
         mediaRecorder.stop();
-        startRecordingButton.disabled = false;
-        stopRecordingButton.disabled = true;
     }
 });
 
