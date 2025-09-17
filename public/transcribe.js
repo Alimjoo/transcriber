@@ -21,6 +21,14 @@ startRecordingButton.addEventListener('click', async () => {
 
         mediaRecorder.onstop = () => {
             const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+            const url = URL.createObjectURL(audioBlob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'recorded_audio.wav';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
             audioInput = new File([audioBlob], 'recorded_audio.wav', { type: 'audio/wav' });
             audioInputElement.files = new DataTransfer().files; // Clear previous files
             const dataTransfer = new DataTransfer();
