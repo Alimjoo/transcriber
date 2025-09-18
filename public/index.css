@@ -22,7 +22,6 @@ h1 {
   color: #2c3e50;
   margin-bottom: 1rem;
   text-align: center;
-  font-weight: bold;
 }
 
 h2 {
@@ -50,7 +49,6 @@ label {
   font-size: 1.1rem;
   color: #34495e;
   margin-bottom: 0.5rem;
-  font-weight: 600;
 }
 
 input[type="file"],
@@ -138,10 +136,13 @@ button:active {
 }
 
 a {
+  display: block;
   color: #3498db;
   text-decoration: none;
   font-size: 1.1rem;
   transition: color 0.3s ease;
+  direction: ltr;
+  text-align: left;
 }
 
 a:hover {
