@@ -39,7 +39,7 @@ p {
   font-size: 1.1rem;
   color: #7f8c8d;
   margin-bottom: 2rem;
-  text-align: center;
+  /* text-align: center; */
 }
 
 .form-group {
