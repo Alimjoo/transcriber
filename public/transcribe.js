@@ -83,7 +83,13 @@ document.getElementById('recordButton').addEventListener('click', async () => {
 document.getElementById('transcribeForm').addEventListener('submit', async (event) => {
     event.preventDefault();
 
+    const submitButton = document.querySelector('#transcribeForm button[type="submit"]');
     const resultDiv = document.getElementById('result');
+
+    // Disable the button and apply gray style
+    submitButton.disabled = true;
+    submitButton.classList.add('disabled');
+
     resultDiv.textContent = 'يېزىلىۋاتىدۇ...';
     resultDiv.classList.remove('error');
 
@@ -143,6 +149,10 @@ document.getElementById('transcribeForm').addEventListener('submit', async (even
         });
         resultDiv.textContent = `خاتالىق: ${error.message}`;
         resultDiv.classList.add('error');
+    }finally {
+        // Re-enable the button and restore original style
+        submitButton.disabled = false;
+        submitButton.classList.remove('disabled');
     }
 });
 

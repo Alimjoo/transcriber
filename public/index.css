@@ -192,3 +192,10 @@ audio {
   margin: 10px 0;
   border-radius: 8px;
 }
+
+
+button.disabled, button:disabled {
+  background-color: #cccccc; /* Gray when disabled */
+  cursor: not-allowed;
+  opacity: 0.6;
+}
