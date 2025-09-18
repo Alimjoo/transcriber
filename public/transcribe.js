@@ -29,7 +29,8 @@ document.getElementById('recordButton').addEventListener('click', async () => {
     const audioInput = document.getElementById('audio');
 
     // Detect if the browser is Safari (for iOS compatibility)
-    const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+    // const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+    const isSafari = false;
     const mimeType = isSafari ? 'audio/mp4' : 'audio/webm;codecs=opus';
     const fileExtension = isSafari ? 'm4a' : 'webm';
     const mimeTypeForBlob = isSafari ? 'audio/mp4' : 'audio/webm';
