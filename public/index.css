@@ -55,7 +55,7 @@ label {
 
 input[type="file"],
 select {
-  width: 90%;
+  width: 100%;
   padding: 12px;
   border: 1px solid #dcdcdc;
   border-radius: 8px;
@@ -220,4 +220,65 @@ button.disabled, button:disabled {
   margin-left: 10px;
   margin-right: 10px;
   font-size: 14px;
+}
+
+
+
+/* Enhanced select styling */
+select {
+  width: 100%;
+  padding: 12px 40px 12px 12px; /* Adjusted padding to accommodate custom arrow */
+  border: 1px solid #dcdcdc;
+  border-radius: 8px;
+  background-color: #fff;
+  font-size: 1rem;
+  font-family: 'sf-arabic', sans-serif;
+  color: #2c3e50;
+  appearance: none; /* Remove default browser styling */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-position: left 12px center; /* Position arrow on the left for RTL */
+  background-repeat: no-repeat;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+  direction: rtl; /* Ensure RTL text alignment */
+  text-align: right;
+}
+
+select:focus {
+  outline: none;
+  border-color: #3498db;
+  box-shadow: 0 0 8px rgba(52, 152, 219, 0.3);
+  background-color: #f8fafc; /* Subtle background change on focus */
+}
+
+select:hover {
+  border-color: #3498db;
+  background-color: #f8fafc; /* Subtle hover effect */
+}
+
+/* Ensure consistency for disabled select */
+select:disabled {
+  background-color: #f0f0f0;
+  color: #7f8c8d;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* Adjust for specific select element with ID model_id */
+#model_id {
+  direction: ltr; /* Override for LTR as per original */
+  text-align: left;
+  background-position: right 12px center; /* Move arrow to right for LTR */
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+  select {
+    font-size: 0.9rem;
+    padding: 10px 30px 10px 10px; /* Slightly smaller padding */
+  }
+
+  #model_id {
+    background-position: right 10px center; /* Adjust arrow position for LTR */
+  }
 }
