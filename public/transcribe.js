@@ -85,6 +85,12 @@ document.getElementById('recordButton').addEventListener('click', async () => {
                     const fileName = this.files.length > 0 ? this.files[0].name : 'No file selected';
                     document.getElementById('fileName').textContent = fileName;
                 });
+                document.getElementById('audio').addEventListener('change', (event) => {
+                    const audioFile = event.target.files[0];
+                    if (audioFile && ALLOWED_MIME_TYPES.includes(audioFile.type)) {
+                        updateAudioPlayer(audioFile);
+                    }
+                });
 
                 const audioBlob4play = new Blob(recordedChunks, { type: selectedMimeType });
                 updateAudioPlayer(audioBlob4play);
