@@ -12,7 +12,7 @@ const app = express();
 const port = 3000;
 
 // Supported audio MIME types
-const ALLOWED_MIME_TYPES = ['audio/wav', 'audio/mpeg', 'audio/webm', 'audio/x-wav'];
+const ALLOWED_MIME_TYPES = ['audio/wav', 'audio/mpeg', 'audio/webm', 'audio/x-wav', 'audio/mp4'];
 
 // Configure multer to store files in memory
 const upload = multer({

@@ -3,7 +3,7 @@ let recordedChunks = [];
 let isRecording = false;
 
 // Supported audio MIME types
-const ALLOWED_MIME_TYPES = ['audio/wav', 'audio/mpeg', 'audio/webm', 'audio/x-wav'];
+const ALLOWED_MIME_TYPES = ['audio/wav', 'audio/mpeg', 'audio/webm', 'audio/x-wav', 'audio/mp4'];
 
 function updateAudioPlayer(audioBlob) {
     const audioPlayer = document.getElementById('audioPlayer');
@@ -24,12 +24,24 @@ document.getElementById('recordButton').addEventListener('click', async () => {
     const recordStatus = document.getElementById('recordStatus');
     const audioInput = document.getElementById('audio');
 
+    // Detect if the browser is Safari (for iOS compatibility)
+    const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+    const mimeType = isSafari ? 'audio/mp4' : 'audio/webm;codecs=opus';
+    const fileExtension = isSafari ? 'm4a' : 'webm';
+    const mimeTypeForBlob = isSafari ? 'audio/mp4' : 'audio/webm';
+
     if (!isRecording) {
         try {
+            // Check if MIME type is supported
+            if (!MediaRecorder.isTypeSupported(mimeType)) {
+                throw new Error(`MIME type ${mimeType} is not supported on this browser.`);
+            }
+
             const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
             // const supportedMimeType = ALLOWED_MIME_TYPES.find(type => MediaRecorder.isTypeSupported(type)) || 'audio/mpeg';
             // mediaRecorder = new MediaRecorder(stream, { mimeType: supportedMimeType });
-            mediaRecorder = new MediaRecorder(stream, { mimeType: 'audio/webm' });
+            // mediaRecorder = new MediaRecorder(stream, { mimeType: 'audio/webm' });
+            mediaRecorder = new MediaRecorder(stream, { mimeType });
 
             recordedChunks = [];
             mediaRecorder.ondataavailable = (event) => {
@@ -39,15 +51,27 @@ document.getElementById('recordButton').addEventListener('click', async () => {
             };
 
             mediaRecorder.onstop = async () => {
-                const audioBlob = new Blob(recordedChunks, { type: 'audio/webm' });
-                const audioFile = new File([audioBlob], 'ئۈنگە ئېلىنغان ئاۋاز.webm', { type: 'audio/webm' });
+                // const audioBlob = new Blob(recordedChunks, { type: 'audio/webm' });
+                // const audioFile = new File([audioBlob], 'ئۈنگە ئېلىنغان ئاۋاز.webm', { type: 'audio/webm' });
+                // const dataTransfer = new DataTransfer();
+                // dataTransfer.items.add(audioFile);
+                // audioInput.value = '';
+                // const parent = audioInput.parentNode;
+                // const newInput = audioInput.cloneNode();
+                // parent.replaceChild(newInput, audioInput);
+                // newInput.files = dataTransfer.files;
+
+                const audioBlob = new Blob(recordedChunks, { type: mimeTypeForBlob });
+                const audioFile = new File([audioBlob], `ئۈنگە ئېلىنغان ئاۋاز.${fileExtension}`, { type: mimeTypeForBlob });
+
+                // Update the file input
                 const dataTransfer = new DataTransfer();
                 dataTransfer.items.add(audioFile);
-                audioInput.value = '';
                 const parent = audioInput.parentNode;
                 const newInput = audioInput.cloneNode();
-                parent.replaceChild(newInput, audioInput);
                 newInput.files = dataTransfer.files;
+                parent.replaceChild(newInput, audioInput);
+
                 // Manually update the file name display
                 const fileName = newInput.files.length > 0 ? newInput.files[0].name : 'No file selected';
                 document.getElementById('fileName').textContent = fileName;
@@ -56,6 +80,7 @@ document.getElementById('recordButton').addEventListener('click', async () => {
                     const fileName = this.files.length > 0 ? this.files[0].name : 'No file selected';
                     document.getElementById('fileName').textContent = fileName;
                 });
+
                 const audioBlob4play = new Blob(recordedChunks, { type: 'audio/webm' });
                 updateAudioPlayer(audioBlob4play);
 
@@ -66,9 +91,6 @@ document.getElementById('recordButton').addEventListener('click', async () => {
                     lastModified: audioFile.lastModified,
                 });
 
-                // Temporary download link for debugging
-                const url = URL.createObjectURL(audioBlob);
-                console.log('Download recording for inspection:', url);
                 recordButton.classList.remove('recording');
                 recordStatus.textContent = 'خاتىرە قىلىش تاماملاندى';
                 recordButton.textContent = 'مىكروفوندىن خاتىرە قىلىش';
