@@ -113,8 +113,8 @@ const debuggerP = document.getElementById('debugger');
             return;
         }
 
-        if (audioInput.size > 4 * 1024 * 1024) {
-            resultDiv.textContent = 'خاتالىق: ھۆججەت چوڭلۇقى 10MB دىن ئېشىپ كەتتى';
+        if (audioInput.size > 4.5 * 1024 * 1024) {
+            resultDiv.textContent = 'خاتالىق: ھۆججەت چوڭلۇقى 4.5MB دىن ئېشىپ كەتتى';
             resultDiv.classList.add('error');
             return;
         }
@@ -128,10 +128,10 @@ const debuggerP = document.getElementById('debugger');
         });
 
         debuggerP.textContent = `Submitting file: 
-              name: ${audioInput.name}
-                type: ${audioInput.type}
-                size: ${audioInput.size}
-                modelId: ${modelId}
+            name: ${audioInput.name}
+            type: ${audioInput.type}
+            size: ${audioInput.size}
+            modelId: ${modelId}
             `;
 
         formData.append('audio', audioInput);
@@ -141,6 +141,7 @@ const debuggerP = document.getElementById('debugger');
             method: 'POST',
             body: formData,
         });
+
         debuggerP.textContent = `Response: 
            status: ${response.status} 
            statusText: ${response.statusText} 
