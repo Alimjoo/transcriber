@@ -42,11 +42,11 @@ document.getElementById('recordButton').addEventListener('click', async () => {
 
             mediaRecorder.onstop = async () => {
                 const audioBlob = new Blob(recordedChunks, { type: 'audio/webm' });
-                // updateAudioPlayer(audioBlob);
                 const audioFile = new File([audioBlob], 'ئاۋاز.webm', { type: 'audio/webm' });
                 const dataTransfer = new DataTransfer();
                 dataTransfer.items.add(audioFile);
                 audioInput.files = dataTransfer.files;
+                updateAudioPlayer(audioBlob);
 
                 console.log('Audio file created:', {
                     name: audioFile.name,
