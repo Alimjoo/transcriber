@@ -43,7 +43,7 @@ p {
 }
 
 .form-group {
-  margin-bottom: 1.5rem;
+  margin-bottom: 0.5rem;
 }
 
 label {
@@ -198,4 +198,25 @@ button.disabled, button:disabled {
   background-color: #cccccc; /* Gray when disabled */
   cursor: not-allowed;
   opacity: 0.6;
+}
+
+.custom-file-upload {
+  display: inline-block;
+  padding: 6px 12px;
+  background: #27ae60;
+  /* border: 1px solid #ccc; */
+  border-radius: 6px;
+  cursor: pointer;
+  color: white;
+}
+
+.custom-file-upload:hover {
+  background: #108641;
+}
+
+.file-name {
+  display: inline-block;
+  margin-left: 10px;
+  margin-right: 10px;
+  font-size: 14px;
 }

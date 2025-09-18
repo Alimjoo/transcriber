@@ -40,7 +40,7 @@ document.getElementById('recordButton').addEventListener('click', async () => {
 
             mediaRecorder.onstop = async () => {
                 const audioBlob = new Blob(recordedChunks, { type: 'audio/webm' });
-                const audioFile = new File([audioBlob], 'ئاۋاز.webm', { type: 'audio/webm' });
+                const audioFile = new File([audioBlob], 'ئۈنگە ئېلىنغان ئاۋاز.webm', { type: 'audio/webm' });
                 const dataTransfer = new DataTransfer();
                 dataTransfer.items.add(audioFile);
                 audioInput.value = '';
@@ -48,6 +48,14 @@ document.getElementById('recordButton').addEventListener('click', async () => {
                 const newInput = audioInput.cloneNode();
                 parent.replaceChild(newInput, audioInput);
                 newInput.files = dataTransfer.files;
+                // Manually update the file name display
+                const fileName = newInput.files.length > 0 ? newInput.files[0].name : 'No file selected';
+                document.getElementById('fileName').textContent = fileName;
+                // Optionally, reattach the change event listener if needed
+                newInput.addEventListener('change', function () {
+                    const fileName = this.files.length > 0 ? this.files[0].name : 'No file selected';
+                    document.getElementById('fileName').textContent = fileName;
+                });
                 const audioBlob4play = new Blob(recordedChunks, { type: 'audio/webm' });
                 updateAudioPlayer(audioBlob4play);
 
@@ -97,7 +105,7 @@ document.getElementById('transcribeForm').addEventListener('submit', async (even
     resultDiv.textContent = 'يېزىلىۋاتىدۇ...';
     resultDiv.classList.remove('error');
 
-const debuggerP = document.getElementById('debugger');
+    const debuggerP = document.getElementById('debugger');
 
     try {
         const formData = new FormData();
@@ -176,3 +184,9 @@ const debuggerP = document.getElementById('debugger');
     }
 });
 
+
+
+document.getElementById('audio').addEventListener('change', function () {
+    const fileName = this.files.length > 0 ? this.files[0].name : 'No file selected';
+    document.getElementById('fileName').textContent = fileName;
+});

@@ -34,8 +34,10 @@
 
     <form id="transcribeForm" enctype="multipart/form-data">
         <div class="form-group">
-            <label for="audio">ئاۋاز ھۆججىتى (WAV, MP3 قاتارلىقلار):</label>
-            <input type="file" id="audio" name="audio" accept="audio/mpeg, audio/wav, audio/x-wav" required>
+            <label for="audiommm">ئاۋاز ھۆججىتى (WAV, MP3 قاتارلىقلار):</label>
+            <label for="audio" class="custom-file-upload">ھۆججەت تاللاڭ</label>
+            <div id="fileName" class="file-name">No file selected</div>
+            <input type="file" id="audio" name="audio" accept="audio/mpeg, audio/wav, audio/x-wav" required style="display: none;">
         </div>
         <div class="form-group">
             <audio id="audioPlayer" controls></audio>
