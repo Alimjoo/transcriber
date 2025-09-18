@@ -46,7 +46,7 @@ document.getElementById('recordButton').addEventListener('click', async () => {
 
             mediaRecorder.onstop = async () => {
                 const audioBlob = new Blob(recordedChunks, { type: 'audio/webm' });
-                updateAudioPlayer(audioBlob);
+                // updateAudioPlayer(audioBlob);
                 const audioFile = new File([audioBlob], 'ئاۋاز.webm', { type: 'audio/webm' });
                 const dataTransfer = new DataTransfer();
                 dataTransfer.items.add(audioFile);
