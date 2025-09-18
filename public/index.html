@@ -1,8 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <!-- Google tag (gtag.js) -->
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-45XMV15Z6Y"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+
+      gtag("config", "G-45XMV15Z6Y");
+    </script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Uyghur Speech to Text</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link
@@ -26,40 +40,52 @@
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black" />
 
-    <link rel="stylesheet" href="./index.css">
-</head>
-<body>
+    <link rel="stylesheet" href="./index.css" />
+  </head>
+  <body>
     <h1>ئۇيغۇرچە ئاۋازدىن تېكىستكە</h1>
-    <p>ئاۋاز ھۆججىتىنى يۈكلەڭ ياكى مىكروفوندىن خاتىرە قىلىڭ، مودېل تاللاڭ ۋە تېكىستكە ئايلاندۇرۇش ئۈچۈن «يېزىلىدۇ» كۇنۇپكىسىنى بېسىڭ.</p>
+    <p>
+      ئاۋاز ھۆججىتىنى يۈكلەڭ ياكى مىكروفوندىن خاتىرە قىلىڭ، مودېل تاللاڭ ۋە
+      تېكىستكە ئايلاندۇرۇش ئۈچۈن «يېزىلىدۇ» كۇنۇپكىسىنى بېسىڭ.
+    </p>
 
     <form id="transcribeForm" enctype="multipart/form-data">
-        <div class="form-group">
-            <label for="audiommm">ئاۋاز ھۆججىتى (WAV, MP3 قاتارلىقلار):</label>
-            <label for="audio" class="custom-file-upload">ھۆججەت تاللاڭ</label>
-            <div id="fileName" class="file-name">No file selected</div>
-            <input type="file" id="audio" name="audio" accept="audio/mpeg, audio/wav, audio/x-wav" required style="display: none;">
-        </div>
-        <div class="form-group">
-            <audio id="audioPlayer" controls></audio>
-        </div>
-        <div class="form-group">
-            <button type="button" id="recordButton">مىكروفوندىن خاتىرە قىلىش</button>
-            <span id="recordStatus" style="margin-right: 10px;"></span>
-        </div>
-        <div class="form-group">
-            <label for="model_id">مودېلىنى تاللاڭ:</label>
-            <select id="model_id" name="model_id">
-                <option value="piyazon/ASR-cv-corpus-ug-14">ASR-ug-14</option>
-                <option value="piyazon/ASR-cv-corpus-ug-13">ASR-ug-13</option>
-                <option value="piyazon/ASR-cv-corpus-ug-12">ASR-ug-12</option>
-                <option value="piyazon/ASR-cv-corpus-ug-11">ASR-ug-11</option>
-                <option value="piyazon/ASR-cv-corpus-ug-10">ASR-ug-10</option>
-                <option value="piyazon/ASR-cv-corpus-ug-9">ASR-ug-9</option>
-                <option value="piyazon/ASR-cv-corpus-ug-8">ASR-ug-8</option>
-                <option value="piyazon/ASR-cv-corpus-ug-7">ASR-ug-7</option>
-            </select>
-        </div>
-        <button type="submit">يېزىلىدۇ</button>
+      <div class="form-group">
+        <label for="audiommm">ئاۋاز ھۆججىتى (WAV, MP3 قاتارلىقلار):</label>
+        <label for="audio" class="custom-file-upload">ھۆججەت تاللاڭ</label>
+        <div id="fileName" class="file-name">No file selected</div>
+        <input
+          type="file"
+          id="audio"
+          name="audio"
+          accept="audio/mpeg, audio/wav, audio/x-wav"
+          required
+          style="display: none"
+        />
+      </div>
+      <div class="form-group">
+        <audio id="audioPlayer" controls></audio>
+      </div>
+      <div class="form-group">
+        <button type="button" id="recordButton">
+          مىكروفوندىن خاتىرە قىلىش
+        </button>
+        <span id="recordStatus" style="margin-right: 10px"></span>
+      </div>
+      <div class="form-group">
+        <label for="model_id">مودېلىنى تاللاڭ:</label>
+        <select id="model_id" name="model_id">
+          <option value="piyazon/ASR-cv-corpus-ug-14">ASR-ug-14</option>
+          <option value="piyazon/ASR-cv-corpus-ug-13">ASR-ug-13</option>
+          <option value="piyazon/ASR-cv-corpus-ug-12">ASR-ug-12</option>
+          <option value="piyazon/ASR-cv-corpus-ug-11">ASR-ug-11</option>
+          <option value="piyazon/ASR-cv-corpus-ug-10">ASR-ug-10</option>
+          <option value="piyazon/ASR-cv-corpus-ug-9">ASR-ug-9</option>
+          <option value="piyazon/ASR-cv-corpus-ug-8">ASR-ug-8</option>
+          <option value="piyazon/ASR-cv-corpus-ug-7">ASR-ug-7</option>
+        </select>
+      </div>
+      <button type="submit">يېزىلىدۇ</button>
     </form>
 
     <h2>يېزىلغان تېكىست</h2>
@@ -70,11 +96,11 @@
         https://huggingface.co/spaces/piyazon/Uyghur-ASR-Speech-to-Text
     </a> -->
 
-<p id="debugger" style="direction: ltr !important; text-align: left; white-space: pre-wrap;">
-
-</p>
+    <p
+      id="debugger"
+      style="direction: ltr !important; text-align: left; white-space: pre-wrap"
+    ></p>
 
     <script src="./transcribe.js"></script>
-</body>
+  </body>
 </html>
-
