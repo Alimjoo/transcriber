@@ -67,7 +67,6 @@ document.getElementById('recordButton').addEventListener('click', async () => {
 
                 const audioBlob = new Blob(recordedChunks, { type: mimeTypeForBlob });
                 const audioFile = new File([audioBlob], `ئۈنگە ئېلىنغان ئاۋاز.${fileExtension}`, { type: mimeTypeForBlob });
-
                 // Update the file input
                 const dataTransfer = new DataTransfer();
                 dataTransfer.items.add(audioFile);
@@ -85,7 +84,10 @@ document.getElementById('recordButton').addEventListener('click', async () => {
                     document.getElementById('fileName').textContent = fileName;
                 });
 
-                const audioBlob4play = new Blob(recordedChunks, { type: 'audio/webm' });
+                // const audioBlob4play = new Blob(recordedChunks, { type: 'audio/webm' });
+                // updateAudioPlayer(audioBlob4play);
+                // Update audio player for playback
+                const audioBlob4play = new Blob(recordedChunks, { type: mimeTypeForBlob });
                 updateAudioPlayer(audioBlob4play);
 
                 console.log('Audio file created:', {
