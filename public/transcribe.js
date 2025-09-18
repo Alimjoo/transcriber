@@ -43,6 +43,7 @@ document.getElementById('recordButton').addEventListener('click', async () => {
                 const audioFile = new File([audioBlob], 'ئاۋاز.webm', { type: 'audio/webm' });
                 const dataTransfer = new DataTransfer();
                 dataTransfer.items.add(audioFile);
+                audioInput.value;
                 audioInput.files = dataTransfer.files;
                 const audioBlob4play = new Blob(recordedChunks, { type: 'audio/webm' });
                 updateAudioPlayer(audioBlob4play);
