@@ -20,10 +20,6 @@ document.getElementById('audio').addEventListener('change', (event) => {
     }
 });
 
-document.getElementById('playButton').addEventListener('click', () => {
-    const audioPlayer = document.getElementById('audioPlayer');
-    audioPlayer.play();
-});
 
 document.getElementById('recordButton').addEventListener('click', async () => {
     const recordButton = document.getElementById('recordButton');
@@ -33,9 +29,9 @@ document.getElementById('recordButton').addEventListener('click', async () => {
     if (!isRecording) {
         try {
             const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-            const supportedMimeType = ALLOWED_MIME_TYPES.find(type => MediaRecorder.isTypeSupported(type)) || 'audio/mpeg';
-            mediaRecorder = new MediaRecorder(stream, { mimeType: supportedMimeType });
-            // mediaRecorder = new MediaRecorder(stream, { mimeType: 'audio/webm' });
+            // const supportedMimeType = ALLOWED_MIME_TYPES.find(type => MediaRecorder.isTypeSupported(type)) || 'audio/mpeg';
+            // mediaRecorder = new MediaRecorder(stream, { mimeType: supportedMimeType });
+            mediaRecorder = new MediaRecorder(stream, { mimeType: 'audio/webm' });
 
             recordedChunks = [];
             mediaRecorder.ondataavailable = (event) => {
@@ -46,7 +42,7 @@ document.getElementById('recordButton').addEventListener('click', async () => {
 
             mediaRecorder.onstop = async () => {
                 const audioBlob = new Blob(recordedChunks, { type: 'audio/webm' });
-                // updateAudioPlayer(audioBlob);
+                updateAudioPlayer(audioBlob);
                 const audioFile = new File([audioBlob], 'ئاۋاز.webm', { type: 'audio/webm' });
                 const dataTransfer = new DataTransfer();
                 dataTransfer.items.add(audioFile);
