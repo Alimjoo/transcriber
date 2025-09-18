@@ -113,7 +113,7 @@ const debuggerP = document.getElementById('debugger');
             return;
         }
 
-        if (audioInput.size > 10 * 1024 * 1024) {
+        if (audioInput.size > 4 * 1024 * 1024) {
             resultDiv.textContent = 'خاتالىق: ھۆججەت چوڭلۇقى 10MB دىن ئېشىپ كەتتى';
             resultDiv.classList.add('error');
             return;
