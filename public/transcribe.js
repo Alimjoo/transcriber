@@ -44,7 +44,7 @@ document.getElementById('recordButton').addEventListener('click', async () => {
                 const dataTransfer = new DataTransfer();
                 dataTransfer.items.add(audioFile);
                 audioInput.value;
-                audioInput.files = dataTransfer.files;
+                // audioInput.files = dataTransfer.files;
                 const audioBlob4play = new Blob(recordedChunks, { type: 'audio/webm' });
                 updateAudioPlayer(audioBlob4play);
 
@@ -60,7 +60,7 @@ document.getElementById('recordButton').addEventListener('click', async () => {
                 console.log('Download recording for inspection:', url);
                 recordButton.classList.remove('recording');
                 recordStatus.textContent = 'خاتىرە قىلىش تاماملاندى';
-                recordButton.textContent = 'مايكىرودىن خاتىرە قىلىش';
+                recordButton.textContent = 'مىكروفوندىن خاتىرە قىلىش';
                 isRecording = false;
             };
 
