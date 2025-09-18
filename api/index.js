@@ -12,7 +12,7 @@ const app = express();
 const port = 3000;
 
 // Supported audio MIME types
-const ALLOWED_MIME_TYPES = ['audio/wav', 'audio/mpeg', 'audio/webm'];
+const ALLOWED_MIME_TYPES = ['audio/wav', 'audio/mpeg', 'audio/webm', 'audio/x-wav'];
 
 // Configure multer to store files in memory
 const upload = multer({
@@ -22,6 +22,7 @@ const upload = multer({
         if (ALLOWED_MIME_TYPES.includes(file.mimetype)) {
             cb(null, true);
         } else {
+            console.log('Rejected file type:', file.mimetype);
             cb(new Error(`Invalid file type. Only ${ALLOWED_MIME_TYPES.join(', ')} are allowed.`));
         }
     },

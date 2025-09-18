@@ -3,7 +3,7 @@ let recordedChunks = [];
 let isRecording = false;
 
 // Supported audio MIME types
-const ALLOWED_MIME_TYPES = ['audio/wav', 'audio/mpeg', 'audio/webm'];
+const ALLOWED_MIME_TYPES = ['audio/wav', 'audio/mpeg', 'audio/webm', 'audio/x-wav'];
 
 
 
@@ -15,7 +15,9 @@ document.getElementById('recordButton').addEventListener('click', async () => {
     if (!isRecording) {
         try {
             const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-            mediaRecorder = new MediaRecorder(stream, { mimeType: 'audio/webm' });
+            const supportedMimeType = ALLOWED_MIME_TYPES.find(type => MediaRecorder.isTypeSupported(type)) || 'audio/mpeg';
+            mediaRecorder = new MediaRecorder(stream, { mimeType: supportedMimeType });
+            // mediaRecorder = new MediaRecorder(stream, { mimeType: 'audio/webm' });
 
             recordedChunks = [];
             mediaRecorder.ondataavailable = (event) => {
