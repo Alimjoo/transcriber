@@ -4,12 +4,24 @@ import axios from 'axios';
 import FormData from 'form-data';
 import { fileURLToPath } from 'url';
 import path from 'path';
+import dotenv from 'dotenv';
+
+// Load environment variables from .env file
+dotenv.config();
+
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
 const port = 3000;
+
+// Get Hugging Face token from environment variables
+const HF_TOKEN = process.env.HF_TOKEN;
+if (!HF_TOKEN) {
+  console.error('Hugging Face token (HF_TOKEN) is not set in .env file');
+  process.exit(1);
+}
 
 // Supported audio MIME types
 const ALLOWED_MIME_TYPES = ['audio/wav', 'audio/mpeg', 'audio/webm', 'audio/x-wav', 'audio/mp4', 'audio/webm;codecs=opus'];
@@ -90,6 +102,7 @@ app.post('/transcribe', upload.single('audio'), async (req, res) => {
             contentType: req.file.mimetype,
         });
         form.append('model_id', modelId);
+        form.append('hf_token', HF_TOKEN);
 
         // Send request to Hugging Face API
         const response = await sendToHuggingFace(form);
