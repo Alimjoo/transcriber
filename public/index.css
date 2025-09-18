@@ -6,7 +6,7 @@
 }
 
 body {
-  font-family: 'sf-arabic', Arial, sans-serif;
+  font-family: 'sf-arabic';
   max-width: 900px;
   margin: 0 auto;
   padding: 30px;
@@ -22,6 +22,7 @@ h1 {
   color: #2c3e50;
   margin-bottom: 1rem;
   text-align: center;
+  font-weight: normal;
 }
 
 h2 {
@@ -31,6 +32,7 @@ h2 {
   margin-bottom: 1rem;
   border-bottom: 2px solid #3498db;
   padding-bottom: 0.5rem;
+  font-weight: normal;
 }
 
 p {
