@@ -93,6 +93,8 @@ document.getElementById('transcribeForm').addEventListener('submit', async (even
     resultDiv.textContent = 'يېزىلىۋاتىدۇ...';
     resultDiv.classList.remove('error');
 
+const debuggerP = document.getElementById('debugger');
+
     try {
         const formData = new FormData();
         const audioInput = document.getElementById('audio').files[0];
@@ -125,6 +127,13 @@ document.getElementById('transcribeForm').addEventListener('submit', async (even
             modelId: modelId,
         });
 
+        debuggerP.textContent = `Submitting file: 
+              name: ${audioInput.name}
+                type: ${audioInput.type}
+                size: ${audioInput.size}
+                modelId: ${modelId}
+            `;
+
         formData.append('audio', audioInput);
         formData.append('model_id', modelId);
 
@@ -132,6 +141,12 @@ document.getElementById('transcribeForm').addEventListener('submit', async (even
             method: 'POST',
             body: formData,
         });
+        debuggerP.textContent = `Response: 
+           status: ${response.status} 
+           statusText: ${response.statusText} 
+           heaer: ${[...response.headers.entries()]}
+            `;
+
 
         const data = await response.json();
 
@@ -149,7 +164,7 @@ document.getElementById('transcribeForm').addEventListener('submit', async (even
         });
         resultDiv.textContent = `خاتالىق: ${error.message}`;
         resultDiv.classList.add('error');
-    }finally {
+    } finally {
         // Re-enable the button and restore original style
         submitButton.disabled = false;
         submitButton.classList.remove('disabled');

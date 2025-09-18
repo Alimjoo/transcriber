@@ -127,9 +127,9 @@ button:active {
 }
 
 .error {
-  color: #e74c3c;
-  font-size: 1rem;
-  margin-top: 0.5rem;
+  color: #e74c3c !important;
+  font-size: 1rem !important;
+  margin-top: 0.5rem !important;
 }
 
 #model_id {
