@@ -26,7 +26,7 @@ document.getElementById('recordButton').addEventListener('click', async () => {
 
             mediaRecorder.onstop = async () => {
                 const audioBlob = new Blob(recordedChunks, { type: 'audio/webm' });
-                const audioFile = new File([audioBlob], 'recording.webm', { type: 'audio/webm' });
+                const audioFile = new File([audioBlob], 'ئاۋاز.webm', { type: 'audio/webm' });
                 const dataTransfer = new DataTransfer();
                 dataTransfer.items.add(audioFile);
                 audioInput.files = dataTransfer.files;
@@ -41,22 +41,25 @@ document.getElementById('recordButton').addEventListener('click', async () => {
                 // Temporary download link for debugging
                 const url = URL.createObjectURL(audioBlob);
                 console.log('Download recording for inspection:', url);
-
+                recordButton.classList.remove('recording');
                 recordStatus.textContent = 'خاتىرە قىلىش تاماملاندى';
                 recordButton.textContent = 'مايكىرودىن خاتىرە قىلىش';
                 isRecording = false;
             };
 
             mediaRecorder.start();
+            recordButton.classList.add('recording');
             recordStatus.textContent = 'خاتىرىلەۋاتىدۇ...';
             recordButton.textContent = 'خاتىرە قىلىشنى توختىتىش';
             isRecording = true;
         } catch (error) {
+            recordButton.classList.remove('recording');
             recordStatus.textContent = `خاتالىق: ${error.message}`;
             recordStatus.classList.add('error');
         }
     } else {
         mediaRecorder.stop();
+        recordButton.classList.remove('recording');
         recordStatus.textContent = 'خاتىرە توختىتىلدى';
     }
 });

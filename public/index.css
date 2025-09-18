@@ -1,68 +1,186 @@
 @font-face {
-  font-family: sf-arabic;
+  font-family: 'sf-arabic';
   src: url(../assests/sf-arabic-regular.ttf);
+  font-weight: normal;
+  font-style: normal;
 }
-/* 
-body {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: 'sf-arabic', sans-serif;
-  background-color: #f5f5f5;
-} */
 
 body {
-  font-family: Arial, sans-serif;
-  max-width: 800px;
+  font-family: 'sf-arabic', Arial, sans-serif;
+  max-width: 900px;
   margin: 0 auto;
-  padding: 20px;
-  direction: rtl; /* Right-to-left for Uyghur */
+  padding: 30px;
+  background: linear-gradient(135deg, #f0f4f8 0%, #e6ecef 100%);
+  direction: rtl;
   text-align: right;
-  font-family: 'sf-arabic', sans-serif;
+  line-height: 1.6;
+  color: #2c3e50;
 }
-h1,
+
+h1 {
+  font-size: 2.5rem;
+  color: #2c3e50;
+  margin-bottom: 1rem;
+  text-align: center;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
 h2 {
-  color: #333;
+  font-size: 1.8rem;
+  color: #34495e;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  border-bottom: 2px solid #3498db;
+  padding-bottom: 0.5rem;
 }
+
+p {
+  font-size: 1.1rem;
+  color: #7f8c8d;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
 .form-group {
-  margin-bottom: 15px;
+  margin-bottom: 1.5rem;
 }
+
 label {
   display: block;
-  margin-bottom: 5px;
-}
-input[type="file"],
-select {
-  width: 100%;
-  padding: 8px;
-  margin-bottom: 10px;
-}
-button {
-  background-color: #4caf50;
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 16px;
-  font-family: 'sf-arabic', sans-serif;
-}
-button:hover {
-  background-color: #45a049;
-}
-#result {
-  margin-top: 20px;
-  padding: 10px;
-  border: 1px solid #ccc;
-  min-height: 200px;
-  direction: rtl;
-  font-size: 18px;
-}
-.error {
-  color: red;
+  font-size: 1.1rem;
+  color: #34495e;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
 }
 
-#model_id{
-    direction: ltr; 
-    text-align: left;
+input[type="file"],
+select {
+  width: 98%;
+  padding: 12px;
+  border: 1px solid #dcdcdc;
+  border-radius: 8px;
+  background-color: #fff;
+  font-size: 1rem;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
+
+input[type="file"]:focus,
+select:focus {
+  outline: none;
+  border-color: #3498db;
+  box-shadow: 0 0 8px rgba(52, 152, 219, 0.3);
+}
+
+button {
+  background-color: #3498db;
+  color: #fff;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1.1rem;
+  font-family: 'sf-arabic', sans-serif;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+button:hover {
+  background-color: #2980b9;
+  transform: translateY(-2px);
+}
+
+button:active {
+  transform: translateY(0);
+}
+
+#recordButton {
+  background-color: #27ae60;
+}
+
+#recordButton:hover {
+  background-color: #108641;
+}
+#recordButton.recording {
+  background-color: #e74c3c; /* Red color when recording */
+}
+#recordButton.recording:hover {
+  background-color: #972215; /* Red color when recording */
+}
+
+#recordStatus {
+  font-size: 1rem;
+  color: #7f8c8d;
+  margin-right: 10px;
+}
+
+#result {
+  margin-top: 2rem;
+  padding: 20px;
+  border: 1px solid #dcdcdc;
+  border-radius: 8px;
+  background-color: #fff;
+  min-height: 200px;
+  font-size: 1.2rem;
+  color: #2c3e50;
+  direction: rtl;
+  line-height: 1.8;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.error {
+  color: #e74c3c;
+  font-size: 1rem;
+  margin-top: 0.5rem;
+}
+
+#model_id {
+  direction: ltr;
+  text-align: left;
+}
+
+a {
+  color: #3498db;
+  text-decoration: none;
+  font-size: 1.1rem;
+  transition: color 0.3s ease;
+}
+
+a:hover {
+  color: #2980b9;
+  text-decoration: underline;
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+  body {
+    padding: 15px;
+  }
+
+  h1 {
+    font-size: 2rem;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+  }
+
+  button {
+    width: 100%;
+    padding: 12px;
+  }
+
+  input[type="file"],
+  select {
+    font-size: 0.9rem;
+  }
+}
+
+/* Container for the form */
+#transcribeForm {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  margin-bottom: 2rem;
+}
+
