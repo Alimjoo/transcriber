@@ -67,16 +67,6 @@ document.getElementById('recordButton').addEventListener('click', async () => {
             };
 
             mediaRecorder.onstop = async () => {
-                // const audioBlob = new Blob(recordedChunks, { type: 'audio/webm' });
-                // const audioFile = new File([audioBlob], 'ئۈنگە ئېلىنغان ئاۋاز.webm', { type: 'audio/webm' });
-                // const dataTransfer = new DataTransfer();
-                // dataTransfer.items.add(audioFile);
-                // audioInput.value = '';
-                // const parent = audioInput.parentNode;
-                // const newInput = audioInput.cloneNode();
-                // parent.replaceChild(newInput, audioInput);
-                // newInput.files = dataTransfer.files;
-
                 const audioBlob = new Blob(recordedChunks, { type: selectedMimeType });
                 const audioFile = new File([audioBlob], `ئۈنگە ئېلىنغان ئاۋاز.${fileExtension}`, { type: selectedMimeType });
                 // Update the file input
@@ -96,9 +86,6 @@ document.getElementById('recordButton').addEventListener('click', async () => {
                     document.getElementById('fileName').textContent = fileName;
                 });
 
-                // const audioBlob4play = new Blob(recordedChunks, { type: 'audio/webm' });
-                // updateAudioPlayer(audioBlob4play);
-                // Update audio player for playback
                 const audioBlob4play = new Blob(recordedChunks, { type: selectedMimeType });
                 updateAudioPlayer(audioBlob4play);
 
@@ -108,6 +95,9 @@ document.getElementById('recordButton').addEventListener('click', async () => {
                     size: audioFile.size,
                     lastModified: audioFile.lastModified,
                 });
+
+                // Stop all tracks to free the microphone
+                stream.getTracks().forEach(track => track.stop());
 
                 recordButton.classList.remove('recording');
                 recordStatus.textContent = 'خاتىرە قىلىش تاماملاندى';
