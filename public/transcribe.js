@@ -46,7 +46,8 @@ document.getElementById('recordButton').addEventListener('click', async () => {
                 const dataTransfer = new DataTransfer();
                 dataTransfer.items.add(audioFile);
                 audioInput.files = dataTransfer.files;
-                // updateAudioPlayer(audioBlob);
+                const audioBlob4play = new Blob(recordedChunks, { type: 'audio/webm' });
+                updateAudioPlayer(audioBlob4play);
 
                 console.log('Audio file created:', {
                     name: audioFile.name,
