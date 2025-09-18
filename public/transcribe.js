@@ -7,10 +7,8 @@ const ALLOWED_MIME_TYPES = ['audio/wav', 'audio/mpeg', 'audio/webm', 'audio/x-wa
 
 function updateAudioPlayer(audioBlob) {
     const audioPlayer = document.getElementById('audioPlayer');
-    const playButton = document.getElementById('playButton');
     const url = URL.createObjectURL(audioBlob);
     audioPlayer.src = url;
-    playButton.disabled = false;
 }
 
 document.getElementById('audio').addEventListener('change', (event) => {
