@@ -5,7 +5,25 @@ let isRecording = false;
 // Supported audio MIME types
 const ALLOWED_MIME_TYPES = ['audio/wav', 'audio/mpeg', 'audio/webm', 'audio/x-wav'];
 
+function updateAudioPlayer(audioBlob) {
+    const audioPlayer = document.getElementById('audioPlayer');
+    const playButton = document.getElementById('playButton');
+    const url = URL.createObjectURL(audioBlob);
+    audioPlayer.src = url;
+    playButton.disabled = false;
+}
 
+document.getElementById('audio').addEventListener('change', (event) => {
+    const audioFile = event.target.files[0];
+    if (audioFile && ALLOWED_MIME_TYPES.includes(audioFile.type)) {
+        updateAudioPlayer(audioFile);
+    }
+});
+
+document.getElementById('playButton').addEventListener('click', () => {
+    const audioPlayer = document.getElementById('audioPlayer');
+    audioPlayer.play();
+});
 
 document.getElementById('recordButton').addEventListener('click', async () => {
     const recordButton = document.getElementById('recordButton');
@@ -28,6 +46,7 @@ document.getElementById('recordButton').addEventListener('click', async () => {
 
             mediaRecorder.onstop = async () => {
                 const audioBlob = new Blob(recordedChunks, { type: 'audio/webm' });
+                updateAudioPlayer(audioBlob);
                 const audioFile = new File([audioBlob], 'ئاۋاز.webm', { type: 'audio/webm' });
                 const dataTransfer = new DataTransfer();
                 dataTransfer.items.add(audioFile);
