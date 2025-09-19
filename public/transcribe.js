@@ -78,11 +78,11 @@ document.getElementById('recordButton').addEventListener('click', async () => {
                 parent.replaceChild(newInput, audioInput);
 
                 // Manually update the file name display
-                const fileName = newInput.files.length > 0 ? newInput.files[0].name : 'No file selected';
+                const fileName = newInput.files.length > 0 ? newInput.files[0].name : 'ھۆججەت تاللانمىدى';
                 document.getElementById('fileName').textContent = fileName;
                 // Optionally, reattach the change event listener if needed
                 newInput.addEventListener('change', function () {
-                    const fileName = this.files.length > 0 ? this.files[0].name : 'No file selected';
+                    const fileName = this.files.length > 0 ? this.files[0].name : 'ھۆججەت تاللانمىدى';
                     document.getElementById('fileName').textContent = fileName;
                 });
                 document.getElementById('audio').addEventListener('change', (event) => {
@@ -223,6 +223,6 @@ document.getElementById('transcribeForm').addEventListener('submit', async (even
 
 
 document.getElementById('audio').addEventListener('change', function () {
-    const fileName = this.files.length > 0 ? this.files[0].name : 'No file selected';
+    const fileName = this.files.length > 0 ? this.files[0].name : 'ھۆججەت تاللانمىدى';
     document.getElementById('fileName').textContent = fileName;
 });
