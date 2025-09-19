@@ -166,6 +166,24 @@ document.getElementById('transcribeForm').addEventListener('submit', async (even
             resultDiv.classList.add('error');
             return;
         }
+        // Check audio duration
+        const audioDuration = await new Promise((resolve, reject) => {
+            const audio = new Audio(URL.createObjectURL(audioInput));
+            audio.addEventListener('loadedmetadata', () => {
+                URL.revokeObjectURL(audio.src); // Clean up
+                resolve(audio.duration);
+            });
+            audio.addEventListener('error', () => {
+                URL.revokeObjectURL(audio.src); // Clean up
+                reject(new Error('ئاۋاز ھۆججىتىنىڭ ئۇزۇنلۇقىنى تەكشۈرۈشتە خاتالىق كۆرۈلدى'));
+            });
+        });
+
+        if (audioDuration > 60) { // 60 seconds = 1 minute
+            resultDiv.textContent = 'خاتالىق: ئاۋاز ئۇزۇنلۇقى 1 مىنۇتتىن ئېشىپ كەتتى';
+            resultDiv.classList.add('error');
+            return;
+        }
 
 
         console.log('Submitting file:', {
