@@ -19,7 +19,7 @@ function updateAudioPlayer(audioBlob) {
     audioPlayer.controls = true; // Ensure controls are enabled
     audioPlayer.playsinline = true; // Prevent full-screen playback on iOS
     // Optional: Clean up previous Blob URLs to avoid memory leaks
-    audioPlayer.addEventListener('ended', () => URL.revokeObjectURL(url));
+    // audioPlayer.addEventListener('ended', () => URL.revokeObjectURL(url));
 }
 
 document.getElementById('audio').addEventListener('change', (event) => {
