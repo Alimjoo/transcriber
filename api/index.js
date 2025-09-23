@@ -24,7 +24,7 @@ if (!HF_TOKEN) {
 }
 
 // Supported audio MIME types
-const ALLOWED_MIME_TYPES = ['audio/wav', 'audio/mpeg', 'audio/webm', 'audio/x-wav', 'audio/mp4', 'audio/webm;codecs=opus'];
+const ALLOWED_MIME_TYPES = ['audio/wav', 'audio/mpeg', 'audio/webm', 'audio/x-wav', 'audio/mp4', 'audio/webm;codecs=opus', 'audio/x-m4a'];
 
 // Configure multer to store files in memory
 const upload = multer({

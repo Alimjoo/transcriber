@@ -3,7 +3,7 @@ let recordedChunks = [];
 let isRecording = false;
 
 // Supported audio MIME types
-const ALLOWED_MIME_TYPES = ['audio/wav', 'audio/mpeg', 'audio/webm', 'audio/x-wav', 'audio/mp4', 'audio/webm;codecs=opus'];
+const ALLOWED_MIME_TYPES = ['audio/wav', 'audio/mpeg', 'audio/webm', 'audio/x-wav', 'audio/mp4', 'audio/webm;codecs=opus', 'audio/x-m4a'];
 
 const mimeTypes_and_extentions = [
     { mime: 'audio/mp4', extension: 'm4a' },
@@ -154,7 +154,7 @@ document.getElementById('transcribeForm').addEventListener('submit', async (even
             resultDiv.classList.add('error');
             return;
         }
-
+        console.log('input audio type: ', audioInput.type);
         if (!ALLOWED_MIME_TYPES.includes(audioInput.type)) {
             resultDiv.textContent = `خاتالىق: يول قويۇلغان ھۆججەت تىپلىرى: ${ALLOWED_MIME_TYPES.join(', ')}`;
             resultDiv.classList.add('error');
