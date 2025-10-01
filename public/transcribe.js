@@ -223,7 +223,38 @@ document.getElementById('transcribeForm').addEventListener('submit', async (even
 
         console.log('Transcription response:', data);
 
-        resultDiv.textContent = data.transcription || 'تېكىست يوق';
+        // resultDiv.textContent = data.transcription || 'تېكىست يوق';
+        // Check if word_details exists and is non-empty
+        if (data.word_details && Array.isArray(data.word_details) && data.word_details.length > 0) {
+            // Map each word to a <span> with color based on confidence
+            const htmlContent = data.word_details
+                .map(detail => {
+                    const confidence = detail.confidence;
+                    let color;
+                    // More detailed color thresholds
+                    if (confidence >= 0.95) {
+                        color = '#006400'; // Dark Green for very high confidence
+                    } else if (confidence >= 0.90) {
+                        color = '#00FF00'; // Light Green for high confidence
+                    } else if (confidence >= 0.80) {
+                        color = '#FFA500'; // Orange for moderate confidence
+                    } else if (confidence >= 0.60) {
+                        color = '#FF4040'; // Light Red for low confidence
+                    } else {
+                        color = '#8B0000'; // Dark Red for very low confidence
+                    }
+                    // Return a span with the word and its color
+                    return `<span style="color: ${color}; margin-right: 5px;">${detail.word}</span>`;
+                })
+                .join(' '); // Join words with spaces
+
+            // Set innerHTML to render styled words
+            resultDiv.innerHTML = htmlContent;
+        } else {
+            // Fallback if no word_details or empty
+            resultDiv.textContent = 'تېكىست يوق';
+        }
+
     } catch (error) {
         console.error('Transcription error:', {
             message: error.message,

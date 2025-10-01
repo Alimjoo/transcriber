@@ -111,10 +111,12 @@ app.post('/transcribe', upload.single('audio'), async (req, res) => {
         console.log('Hugging Face API response:', {
             status: response.status,
             transcription: response.data.transcription,
+            word_details: response.data.word_details,
         });
 
         // Return the transcription
-        res.json({ transcription: response.data.transcription });
+        // res.json({ transcription: response.data.transcription });
+        res.json(response.data);
     } catch (error) {
         console.error('Transcription error:', {
             message: error.message,
