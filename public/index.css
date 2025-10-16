@@ -154,36 +154,7 @@ a:hover {
   text-decoration: underline;
 } */
 
-/* Responsive Design */
-@media (max-width: 600px) {
-  body {
-    padding: 15px;
-  }
 
-  h1 {
-    font-size: 2rem;
-  }
-
-  h2 {
-    font-size: 1.5rem;
-  }
-
-  button {
-    width: 100%;
-    padding: 12px;
-  }
-
-  input[type="file"],
-  select {
-    font-size: 0.9rem;
-  }
-  .selected_title{
-      gap: 5px;
-  }
-  .selected_title h5 {
-      font-size: 16px; /* Adjust size as needed */
-  }
-}
 
 /* Container for the form */
 #transcribeForm {
@@ -309,5 +280,36 @@ button.disabled, button:disabled {
 .selected_title #unselected_a:hover {
     background-color: #0056b3; /* Change background on hover for the second link */
     color: white; /* Optional: Improve contrast on dark hover background */
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+  body {
+    padding: 15px;
+  }
+
+  h1 {
+    font-size: 2rem;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+  }
+
+  button {
+    width: 100%;
+    padding: 12px;
+  }
+
+  input[type="file"],
+  select {
+    font-size: 0.9rem;
+  }
+  .selected_title{
+    gap: 5px;
+  }
+  .selected_title h5 {
+    font-size: 16px; /* Adjust size as needed */
+  }
 }
 
