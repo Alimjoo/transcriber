@@ -177,6 +177,12 @@ a:hover {
   select {
     font-size: 0.9rem;
   }
+  .selected_title{
+      gap: 5px;
+  }
+  .selected_title h5 {
+      font-size: 16px; /* Adjust size as needed */
+  }
 }
 
 /* Container for the form */
