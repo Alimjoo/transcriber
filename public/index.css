@@ -258,6 +258,7 @@ button.disabled, button:disabled {
 .selected_title h5 {
     margin: 0;
     font-size: 24px; /* Adjust size as needed */
+    text-align: right;
 }
 
 .selected_title h5 a {
