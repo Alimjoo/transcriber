@@ -43,14 +43,18 @@
     <link rel="stylesheet" href="./index.css" />
   </head>
   <body>
-    <h1>ئۇيغۇرچە ئاۋازدىن تېكىستكە</h1>
-    <p>
-      ئاۋاز ھۆججىتىنى يۈكلەڭ ياكى مىكروفوندىن خاتىرە قىلىڭ، مودېل تاللاڭ ۋە
-      تېكىستكە ئايلاندۇرۇش ئۈچۈن «يېزىلىدۇ» كۇنۇپكىسىنى بېسىڭ.
-    </p>
+    <!-- <h1>ئۇيغۇرچە ئاۋازدىن تېكىستكە</h1> -->
+      <div class="selected_title">
+        <h5><a id="unselected_a" href="https://synthesizer.piyazon.top/">ئۇيغۇرچە تىكىستتىن ئاۋازغا</a></h5>
+        <h5><a id="seleted_a" href="https://transcriber.piyazon.top/">ئۇيغۇرچە ئاۋازدىن تېكىستكە</a></h5>
+    </div>
 
     <form id="transcribeForm" enctype="multipart/form-data">
       <div class="form-group">
+            <p>
+      ئاۋاز ھۆججىتىنى يۈكلەڭ ياكى مىكروفوندىن خاتىرە قىلىڭ، مودېل تاللاڭ ۋە
+      تېكىستكە ئايلاندۇرۇش ئۈچۈن «يېزىلىدۇ» كۇنۇپكىسىنى بېسىڭ.
+    </p>
         <label for="audiommm">ئاۋاز ھۆججىتى (WAV, MP3 قاتارلىقلار):</label>
         <label for="audio" class="custom-file-upload">ھۆججەت تاللاڭ</label>
         <div id="fileName" class="file-name">ھۆججەت تاللانمىدى</div>

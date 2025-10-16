@@ -17,7 +17,7 @@ body {
   color: #2c3e50;
 }
 
-h1 {
+h1, h5 {
   font-size: 2.5rem;
   color: #2c3e50;
   margin-bottom: 1rem;
@@ -38,7 +38,7 @@ h2 {
 p {
   font-size: 1.1rem;
   color: #7f8c8d;
-  margin-bottom: 2rem;
+  /* margin-bottom: 2rem; */
   /* text-align: center; */
 }
 
@@ -138,7 +138,7 @@ button:active {
   text-align: left;
 }
 
-a {
+/* a {
   display: block;
   color: #3498db;
   text-decoration: none;
@@ -151,7 +151,7 @@ a {
 a:hover {
   color: #2980b9;
   text-decoration: underline;
-}
+} */
 
 /* Responsive Design */
 @media (max-width: 600px) {
@@ -266,3 +266,41 @@ button.disabled, button:disabled {
     z-index: 2; /* Ensure it stays above the gradient */
     padding: 0 5px; /* Padding to separate text from edge */
 }
+
+
+.selected_title {
+    display: flex;
+    justify-content: center; /* Align titles side by side and centered if needed */
+    align-items: center;
+    gap: 20px; /* Space between the titles */
+    line-height: normal;
+    direction: ltr;
+}
+
+.selected_title h5 {
+    margin: 0;
+    font-size: 24px; /* Adjust size as needed */
+}
+
+.selected_title h5 a {
+    text-decoration: none; /* Remove underline from links */
+    color: inherit; /* Keep original text color */
+    display: block;
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+.selected_title #seleted_a {
+    background-color: #007bff; /* Highlight the first title/link */
+    color: white;
+}
+
+.selected_title #seleted_a:hover {
+    background-color: #0056b3; /* Optional: Change highlight on hover */
+}
+
+.selected_title #unselected_a:hover {
+    background-color: #0056b3; /* Change background on hover for the second link */
+    color: white; /* Optional: Improve contrast on dark hover background */
+}
+
