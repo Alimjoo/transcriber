@@ -166,17 +166,71 @@ document.getElementById('transcribeForm').addEventListener('submit', async (even
             resultDiv.classList.add('error');
             return;
         }
-        // Check audio duration
+        // // Check audio duration
+        // const audioDuration = await new Promise((resolve, reject) => {
+        //     const audio = new Audio(URL.createObjectURL(audioInput));
+        //     audio.addEventListener('loadedmetadata', () => {
+        //         URL.revokeObjectURL(audio.src); // Clean up
+        //         resolve(audio.duration);
+        //     });
+        //     audio.addEventListener('error', () => {
+        //         URL.revokeObjectURL(audio.src); // Clean up
+        //         reject(new Error('ئاۋاز ھۆججىتىنىڭ ئۇزۇنلۇقىنى تەكشۈرۈشتە خاتالىق كۆرۈلدى'));
+        //     });
+        // });
+
         const audioDuration = await new Promise((resolve, reject) => {
-            const audio = new Audio(URL.createObjectURL(audioInput));
-            audio.addEventListener('loadedmetadata', () => {
-                URL.revokeObjectURL(audio.src); // Clean up
-                resolve(audio.duration);
-            });
-            audio.addEventListener('error', () => {
-                URL.revokeObjectURL(audio.src); // Clean up
-                reject(new Error('ئاۋاز ھۆججىتىنىڭ ئۇزۇنلۇقىنى تەكشۈرۈشتە خاتالىق كۆرۈلدى'));
-            });
+            const reader = new FileReader();
+            reader.onload = async (e) => {
+                const arrayBuffer = e.target.result;
+                const audioCtx = new (window.AudioContext || window.webkitAudioContext)(); // Web Audio API
+
+                try {
+                    // Decode audio data - this is more reliable on Android as it fully processes the buffer
+                    const audioBuffer = await audioCtx.decodeAudioData(arrayBuffer);
+                    const duration = audioBuffer.duration;
+
+                    if (isFinite(duration) && duration > 0) {
+                        resolve(duration);
+                    } else {
+                        throw new Error('Invalid duration from decode');
+                    }
+                } catch (decodeErr) {
+                    console.warn('Web Audio decode failed (common on Android for this format):', decodeErr);
+
+                    // Fallback 1: Try music-metadata-browser for header parsing (handles MP3, OGG, WAV, AAC better)
+                    // if (typeof parseBlob !== 'undefined') {
+                    //     try {
+                    //         const metadata = await parseBlob(audioInput);
+                    //         resolve(metadata.format.duration || 0);
+                    //     } catch (metaErr) {
+                    //         reject(metaErr);
+                    //     }
+                    // } else {
+                    // Fallback 2: Original <audio> method, but preload more aggressively
+                    const audio = new Audio(URL.createObjectURL(audioInput));
+                    audio.preload = 'metadata'; // Force metadata load
+                    audio.volume = 0; // Silent
+                    audio.play().then(() => audio.pause()).catch(() => { }); // Trigger load via play attempt
+
+                    audio.addEventListener('loadedmetadata', () => {
+                        URL.revokeObjectURL(audio.src);
+                        resolve(audio.duration);
+                    });
+                    audio.addEventListener('error', (err) => {
+                        URL.revokeObjectURL(audio.src);
+                        reject(err);
+                    });
+
+                    // Timeout to avoid hanging
+                    setTimeout(() => reject(new Error('Timeout loading metadata')), 10000);
+                    // }
+                } finally {
+                    audioCtx.close();
+                }
+            };
+            reader.onerror = reject;
+            reader.readAsArrayBuffer(audioInput); // Read full file for decoding
         });
 
         if (audioDuration > 60) { // 60 seconds = 1 minute
